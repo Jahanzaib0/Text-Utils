@@ -1,24 +1,42 @@
-import logo from './logo.svg';
+
 import './App.css';
+import { Navbar } from './components/Navbar.mjs';
+import { Textform } from './components/Textform.mjs';
+import React, { useState } from 'react'
+import { Alert } from './components/alert.mjs';
+
 
 function App() {
+  const [mode, setMode] = useState("light");
+  const [alert, setAlert] = useState(null);
+
+ const showAlert=(message, type)=>{
+    setAlert({
+      msg: message,
+      type : type
+    });
+    setTimeout(()=>{
+      setAlert(null)
+    }, 1500)
+  }
+  const toggleMode=()=>{
+    if (mode === "light") {
+      setMode("dark");
+      document.body.style.backgroundColor = "#154c79";
+      showAlert("Dark Mode has been Enabled", "success")
+    }
+    else {
+      setMode("light");
+      document.body.style.backgroundColor = "white";
+      showAlert("Light Mode has been Enabled", "success")
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <>
+   <Navbar mode={mode} toggleMode={toggleMode}/>
+   <Alert alert={alert}/>
+    <Textform mode={mode} showAlert={showAlert}/>
+   </>
   );
 }
 
